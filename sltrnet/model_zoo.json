@@ -1,0 +1,44 @@
+{
+  "nyuv2-l": {
+    "asset": "sltr-net-nyuv2-l.pth",
+    "sha256": "401f384e2e2df026e8040c575b53da13f0fac1e2f90487708d8af346719d8185",
+    "bytes": 119888363,
+    "parameters": 29921410,
+    "ms5_flip_miou_percent": 62.67559549460816
+  },
+  "nyuv2-m": {
+    "asset": "sltr-net-nyuv2-m.pth",
+    "sha256": "0412711bc8381f08c6ccb232110e63a0fa3dc8dac8f28aaac779ff6b9699af81",
+    "bytes": 116370667,
+    "parameters": 29041986,
+    "ms5_flip_miou_percent": 61.38102823160687
+  },
+  "nyuv2-s": {
+    "asset": "sltr-net-nyuv2-s.pth",
+    "sha256": "c815ab9d8deb6e3cfd4653a41002fb0ec33e1af870ddf6f7c6e35ce57c91da7c",
+    "bytes": 105522587,
+    "parameters": 26334226,
+    "ms5_flip_miou_percent": 60.191280328188526
+  },
+  "sunrgbd-l": {
+    "asset": "sltr-net-sunrgbd-l.pth",
+    "sha256": "311fa6726e6e4527b96dfbe1b61a348b765595493296898b8eac877b29a2671a",
+    "bytes": 119886507,
+    "parameters": 29920636,
+    "ms5_flip_miou_percent": 55.321331020750684
+  },
+  "sunrgbd-m": {
+    "asset": "sltr-net-sunrgbd-m.pth",
+    "sha256": "bed10799336490a1fa69a15cffc6c1fb19e46b68448c9c508be18f9c723bca58",
+    "bytes": 116369579,
+    "parameters": 29041404,
+    "ms5_flip_miou_percent": 54.75454117799787
+  },
+  "sunrgbd-s": {
+    "asset": "sltr-net-sunrgbd-s.pth",
+    "sha256": "15fb174c787b79a24c2de262206c71a2948f2886a509952a822681c7b88bc147",
+    "bytes": 105521787,
+    "parameters": 26333740,
+    "ms5_flip_miou_percent": 53.790965549779315
+  }
+}

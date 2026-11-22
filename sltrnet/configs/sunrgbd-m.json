@@ -1,0 +1,125 @@
+{
+  "augmentation": {
+    "hflip": 0.5,
+    "color_jitter": [
+      0.2,
+      0.2,
+      0.2,
+      0.05
+    ],
+    "scale_range": [
+      0.75,
+      1.25
+    ]
+  },
+  "average_updates": [
+    6500,
+    7500,
+    8500
+  ],
+  "branch_a": {
+    "kind": "csp",
+    "widths": [
+      64,
+      128,
+      256
+    ],
+    "repeats": [
+      1,
+      2,
+      2
+    ],
+    "context_p5": false,
+    "topdown": false
+  },
+  "branch_b": {
+    "kind": "csp",
+    "widths": [
+      64,
+      128,
+      256
+    ],
+    "repeats": [
+      2,
+      3,
+      4
+    ],
+    "context_p5": false,
+    "topdown": false
+  },
+  "class_names": [
+    "wall",
+    "floor",
+    "cabinet",
+    "bed",
+    "chair",
+    "sofa",
+    "table",
+    "door",
+    "window",
+    "bookshelf",
+    "picture",
+    "counter",
+    "blinds",
+    "desk",
+    "shelves",
+    "curtain",
+    "dresser",
+    "pillow",
+    "mirror",
+    "floor_mat",
+    "clothes",
+    "ceiling",
+    "books",
+    "fridge",
+    "tv",
+    "paper",
+    "towel",
+    "shower_curtain",
+    "box",
+    "whiteboard",
+    "person",
+    "night_stand",
+    "toilet",
+    "sink",
+    "lamp",
+    "bathtub",
+    "bag"
+  ],
+  "decoder_width": 96,
+  "depth_format": "png",
+  "depth_max_meters": 10.0,
+  "encoder_input_scale": 0.75,
+  "head_a_source": "rgb",
+  "head_b_source": "depth",
+  "ignore_index": 255,
+  "input_size": [
+    530,
+    730
+  ],
+  "monitor_origin": "test5050",
+  "monitor_split": "test_sub500",
+  "num_classes": 37,
+  "num_workers": 0,
+  "padding_multiple": 24,
+  "pyramid_widths": [
+    32,
+    64,
+    96
+  ],
+  "research_arm": "SUN_M",
+  "seed": 42,
+  "shared_injection": "standard",
+  "split_sizes": {
+    "train5285": 5285,
+    "test5050": 5050,
+    "test_sub500": 500
+  },
+  "test_split": "test5050",
+  "test_used_for_selection": false,
+  "train_split": "train5285",
+  "model_name": "SLTR-Net-M",
+  "experiment_name": "sunrgbd-m",
+  "loader_batch": 1,
+  "micro_batch": 1
+}

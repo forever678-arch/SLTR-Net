@@ -1,0 +1,87 @@
+{
+  "augmentation": {
+    "hflip": 0.5,
+    "color_jitter": [
+      0.2,
+      0.2,
+      0.2,
+      0.05
+    ],
+    "scale_range": [
+      0.75,
+      1.25
+    ]
+  },
+  "average_updates": [
+    2000,
+    3000,
+    4000
+  ],
+  "branch_a": {
+    "kind": "csp",
+    "widths": [
+      64,
+      128,
+      256
+    ],
+    "repeats": [
+      1,
+      2,
+      2
+    ],
+    "context_p5": false,
+    "topdown": false
+  },
+  "branch_b": {
+    "kind": "csp",
+    "widths": [
+      64,
+      128,
+      256
+    ],
+    "repeats": [
+      2,
+      3,
+      4
+    ],
+    "context_p5": false,
+    "topdown": false
+  },
+  "decoder_width": 96,
+  "encoder_input_scale": 0.75,
+  "encoder_keep_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "head_a_source": "rgb",
+  "head_b_source": "depth",
+  "monitor_split": "test",
+  "num_classes": 40,
+  "num_workers": 0,
+  "pyramid_widths": [
+    32,
+    64,
+    96
+  ],
+  "research_arm": "SLTR_M",
+  "seed": 42,
+  "shared_injection": "standard",
+  "model_name": "SLTR-Net-M",
+  "experiment_name": "nyuv2-m",
+  "loader_batch": 1,
+  "micro_batch": 1,
+  "input_size": [
+    480,
+    640
+  ]
+}

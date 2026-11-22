@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.pth
+*.pt
+.venv/
+/data/
+weights/
+dist/
+*.egg-info/
+results/

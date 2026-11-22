@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sltr-net"
+version = "1.0.0"
+description = "Spatial and Layer-Trajectory Readout for RGB-D semantic segmentation"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = ["torch>=2.8,<2.9", "torchvision>=0.23,<0.24", "transformers==5.17.0", "timm", "numpy", "pillow", "pyyaml", "h5py", "scipy", "requests", "opencv-python"]
+
+[project.scripts]
+sltrnet = "sltrnet.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sltrnet*", "seadpnet*"]
+
+[tool.setuptools.package-data]
+sltrnet = ["configs/*.json", "model_zoo.json"]
