@@ -1,5 +1,7 @@
 # SLTR-Net
 
+[![DOI 10.5281/zenodo.24441068](https://zenodo.org/badge/DOI/10.5281/zenodo.24441068.svg)](https://doi.org/10.5281/zenodo.24441068)
+
 Code for **SLTR-Net: Coordinated Readout of Spatial Semantics and Layer Trajectories for RGB-D Semantic Segmentation**, by Lishan Jia and Min Wang (CSAI 2026).
 
 SLTR-Net uses dual-branch coupled semantic readout (DCSR) for spatial access and modality-conditioned layer-trajectory readout (MCLTR) for shared layer selection. The decoders retain separate feature updates and average their class probabilities for prediction.
