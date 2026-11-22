@@ -18,16 +18,15 @@ def digest_file(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def load_model(dataset, variant, weights, backbone, device):
+def load_config(dataset, variant):
     name = f'{dataset}-{variant.lower()}'
-    config = json.loads((ROOT / 'configs' / f'{name}.json').read_text(encoding='utf-8'))
-    records = json.loads((ROOT / 'model_zoo.json').read_text(encoding='utf-8'))
-    record = records[name]
+    return json.loads((ROOT / 'configs' / f'{name}.json').read_text(encoding='utf-8'))
+
+
+def build_model(dataset, variant, config, backbone):
     if digest_file(backbone) != RF_SHA256:
         raise ValueError('Unexpected RF-DETR SegSmall checkpoint')
-    if digest_file(weights) != record['sha256']:
-        raise ValueError(f'Unexpected checkpoint for {name}')
-    config['pretrained_checkpoint'] = str(Path(backbone).resolve())
+    config = {**config, 'pretrained_checkpoint': str(Path(backbone).resolve())}
     if dataset == 'nyuv2':
         from .family_model import FamilyH
 
@@ -40,10 +39,20 @@ def load_model(dataset, variant, weights, backbone, device):
         from .sun_model import SunFamilyH
 
         model = SunFamilyH(config)
-    state = torch.load(weights, map_location='cpu', weights_only=True)
-    model.load_state_dict(state, strict=True)
+    name = f'{dataset}-{variant.lower()}'
+    record = json.loads((ROOT / 'model_zoo.json').read_text(encoding='utf-8'))[name]
     if sum(p.numel() for p in model.parameters()) != record['parameters']:
         raise ValueError(f'Parameter count mismatch for {name}')
+    return model, record
+
+
+def load_model(dataset, variant, weights, backbone, device, *, local_weights=False):
+    config = load_config(dataset, variant)
+    model, record = build_model(dataset, variant, config, backbone)
+    if not local_weights and digest_file(weights) != record['sha256']:
+        raise ValueError('Unexpected release checkpoint. For a locally trained tensor-only average, pass --local-weights.')
+    state = torch.load(weights, map_location='cpu', weights_only=True)
+    model.load_state_dict(state, strict=True)
     return model.to(device).eval(), config
 
 
@@ -75,6 +84,7 @@ def main():
     parser.add_argument('--dataset', choices=('nyuv2', 'sunrgbd'), required=True)
     parser.add_argument('--variant', choices=('s', 'm', 'l'), required=True)
     parser.add_argument('--weights', required=True, type=Path)
+    parser.add_argument('--local-weights', action='store_true', help='Load a locally averaged state dictionary with strict model matching')
     parser.add_argument('--rf-checkpoint', required=True, type=Path)
     parser.add_argument('--device', default='cuda')
     parser.add_argument('--data-root', type=Path)
@@ -86,7 +96,8 @@ def main():
     if args.command == 'evaluate':
         if not args.data_root or (args.dataset == 'nyuv2' and not args.valid_root):
             parser.error('evaluate requires --data-root and, for NYUv2, --valid-root')
-    model, config = load_model(args.dataset, args.variant, args.weights, args.rf_checkpoint, args.device)
+    model, config = load_model(args.dataset, args.variant, args.weights, args.rf_checkpoint, args.device,
+                               local_weights=args.local_weights)
     if args.command == 'smoke':
         result = smoke(model, config, args.device)
     else:

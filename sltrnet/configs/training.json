@@ -1,0 +1,32 @@
+{
+  "nyuv2": {
+    "seed": 42,
+    "train_split": "train",
+    "train_images": 795,
+    "loader_batch": 32,
+    "train_updates": 10000,
+    "stop_updates": 4000,
+    "average_updates": [2000, 3000, 4000],
+    "warmup_updates": 500,
+    "min_lr_ratio": 0.01,
+    "backbone_lr": 0.0000141,
+    "head_lr": 0.000141,
+    "weight_decay": 0.0001,
+    "gradient_clip": 0.1
+  },
+  "sunrgbd": {
+    "seed": 42,
+    "train_split": "train5285",
+    "train_images": 5285,
+    "loader_batch": 32,
+    "train_updates": 16000,
+    "stop_updates": 9000,
+    "average_updates": [6500, 7500, 8500],
+    "warmup_updates": 500,
+    "min_lr_ratio": 0.01,
+    "backbone_lr": 0.00000141,
+    "head_lr": 0.000141,
+    "weight_decay": 0.0001,
+    "gradient_clip": 0.1
+  }
+}

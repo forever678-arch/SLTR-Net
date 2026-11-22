@@ -42,6 +42,34 @@ python -m sltrnet.cli evaluate --dataset sunrgbd --variant l --weights weights/s
 
 Choose `--variant s` or `--variant m` with the corresponding checkpoint. For single-scale evaluation, use `--scales 1.0` and omit `--flip`.
 
+## Train from RF-DETR initialisation
+
+Prepare the training splits with [the dataset instructions](docs/data_preparation.md). For each dataset, `--variant s`, `m` or `l` selects the corresponding architecture. Both datasets start from the pinned RF-DETR checkpoint. The six released SLTR-Net weights are the results of training and averaging.
+
+```bash
+# NYUv2
+python -m sltrnet.train fit --dataset nyuv2 --variant l --rf-checkpoint weights/rf-detr-seg-small.pt --data-root data/nyuv2 --valid-root data/nyuv2/nyuv2_raw_validity --run-dir runs/nyuv2-l --micro-batch 1
+
+# SUN RGB-D
+python -m sltrnet.train fit --dataset sunrgbd --variant l --rf-checkpoint weights/rf-detr-seg-small.pt --data-root data/sunrgbd_processed --run-dir runs/sunrgbd-l --micro-batch 1
+```
+
+The optimiser uses AdamW with seed 42, equal cross-entropy supervision for both heads and a nominal batch of 32 with the final partial batch retained. Every microbatch loss uses the number of valid pixels in the full loader batch as its denominator. Change `--micro-batch` to suit available video memory. CUDA forward passes use BF16 autocast and the loss is computed in FP32. The [training recipes](sltrnet/configs/training.json) specify the two learning rates, warm-up, cosine decay and gradient clipping.
+
+| Dataset | LR schedule horizon | Default stop | Snapshots averaged |
+|---|---:|---:|---|
+| NYUv2 | 10,000 | 4,000 | 2,000 / 3,000 / 4,000 |
+| SUN RGB-D | 16,000 | 9,000 | 6,500 / 7,500 / 8,500 |
+
+`--stop-after` changes the stopping point while retaining the recipe's scheduler horizon. Each run directory contains the training settings and fixed-update model snapshots for averaging. Those snapshots store parameters for averaging and evaluation.
+
+```bash
+python -m sltrnet.train average --run-dir runs/nyuv2-l --out weights/nyuv2-l-avg.pth
+python -m sltrnet.train average --run-dir runs/sunrgbd-l --out weights/sunrgbd-l-avg.pth
+```
+
+To evaluate a locally trained average, use `--local-weights` with the corresponding evaluation command and set `--weights` to the new average. The loader still checks the backbone checkpoint and matches every SLTR-Net tensor against the selected model. Use a new run directory with `fit --smoke` to check two synthetic training updates, snapshot writes and averaging without preparing a dataset.
+
 ## Licence
 
 The project code uses the [MIT licence](LICENSE). The RF-DETR dependency and the underlying components retain their respective upstream licences. See [third-party notices](THIRD_PARTY_NOTICES.md).

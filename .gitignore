@@ -8,3 +8,4 @@ weights/
 dist/
 *.egg-info/
 results/
+runs/
